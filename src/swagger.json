@@ -1,0 +1,11 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RentalX Docs",
+    "description": "this is an api",
+    "version": "1.0.0",
+    "contact": {
+      "email": "p.davi.nunes@gmail.com"
+    }
+  }
+}
