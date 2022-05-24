@@ -1,4 +1,4 @@
-import {Specification} from '../../model/Specification';
+import { Specification } from '../../entities/Specification';
 import {
   ICreateSpecificationDTO,
   ISpecificationRepository
@@ -19,7 +19,7 @@ class SpecificationsRepository implements ISpecificationRepository {
     }
     return SpecificationsRepository.INSTANCE;
   }
-  create({name, description}: ICreateSpecificationDTO): void {
+  create({ name, description }: ICreateSpecificationDTO): void {
     const specification = new Specification();
 
     Object.assign(specification, {
@@ -38,4 +38,4 @@ class SpecificationsRepository implements ISpecificationRepository {
   }
 }
 
-export {SpecificationsRepository};
+export { SpecificationsRepository };
