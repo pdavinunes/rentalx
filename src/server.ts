@@ -1,3 +1,5 @@
+import "reflect-metadata"
+
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
@@ -7,6 +9,8 @@ import swaggerFile from './swagger.json'
 import { createConnection } from './database/data-source';
 
 createConnection();
+
+import "./shared/container"
 
 const app = express();
 
