@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { sign } from 'jsonwebtoken'
 
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { AppError } from '../../../../Errors/AppError';
 
 
 interface IRequest {
@@ -30,13 +31,13 @@ class AuthenticateUserUseCase {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
-      throw new Error("Email or password incorrect");
+      throw new AppError("Email or password incorrect");
     }
 
     const passwordMatch = await compare(password, user.password)
 
     if (!passwordMatch) {
-      throw new Error("Email or password incorrect");
+      throw new AppError("Email or password incorrect");
     }
 
     const token = sign({}, "9e96df6a420284b7e50d139c92db6c46", {
