@@ -27,8 +27,6 @@ Dever ser possível listar todos os carros disponíveis pelo nome do carro
 **RF**
 
 Deve ser possível cadastrar uma especficação para um carro
-Deve ser possível listar todas as especificações
-Deve ser possível listar todos os carros
 
 **RN**
 
