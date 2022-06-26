@@ -1,3 +1,5 @@
+import dayjs from "dayjs"
+
 import { RentalsRepositoryInMemory } from "@modules/rentals/repositories/in-memory/RentalsRepositoryInMemory"
 import { AppError } from "@shared/errors/AppError"
 import { CreateRentalUseCase } from "./CreateRentalUseCase"
@@ -5,6 +7,9 @@ import { CreateRentalUseCase } from "./CreateRentalUseCase"
 let createRentalUseCase: CreateRentalUseCase
 let rentalsRepositoryInMemory: RentalsRepositoryInMemory
 describe("Create Rental", () => {
+
+  const dayAdd24Hours = dayjs().add(1, 'day').toDate()
+
   beforeEach(() => {
     rentalsRepositoryInMemory = new RentalsRepositoryInMemory();
     createRentalUseCase = new CreateRentalUseCase(rentalsRepositoryInMemory)
@@ -15,7 +20,7 @@ describe("Create Rental", () => {
     const payload = {
       user_id: '123',
       car_id: '123',
-      expected_return_date: new Date()
+      expected_return_date: dayAdd24Hours
     }
 
     const rental = await createRentalUseCase.execute(payload)
@@ -29,7 +34,7 @@ describe("Create Rental", () => {
       const payload = {
         user_id: '123',
         car_id: '123',
-        expected_return_date: new Date()
+        expected_return_date: dayAdd24Hours
       }
 
       await createRentalUseCase.execute(payload)
@@ -42,7 +47,20 @@ describe("Create Rental", () => {
       const payload = {
         user_id: '123',
         car_id: '123',
-        expected_return_date: new Date()
+        expected_return_date: dayAdd24Hours
+      }
+
+      await createRentalUseCase.execute(payload)
+      await createRentalUseCase.execute({ ...payload, user_id: '234' })
+    }).rejects.toBeInstanceOf(AppError)
+  })
+
+  it("should not be able to create a new rental with invalid return time", async () => {
+    expect(async () => {
+      const payload = {
+        user_id: '123',
+        car_id: '123',
+        expected_return_date: dayjs().toDate()
       }
 
       await createRentalUseCase.execute(payload)
