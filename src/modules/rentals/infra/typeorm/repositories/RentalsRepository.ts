@@ -1,11 +1,9 @@
 import { ICreateRentalDTO } from "@modules/rentals/dtos/ICreateRentalDTO";
 import { IRentalsRepository } from "@modules/rentals/repositories/IRentalsRepository";
 import dataSource from "@shared/infra/typeorm/data-source";
-import { singleton } from "tsyringe";
 import { Repository } from "typeorm";
 import { Rental } from "../entities/Rental";
 
-@singleton()
 class RentalsRepository implements IRentalsRepository {
 
   private repository: Repository<Rental>
@@ -32,6 +30,13 @@ class RentalsRepository implements IRentalsRepository {
     await this.repository.save(rental);
 
     return rental;
+  }
+
+  async findById(id: string): Promise<Rental> {
+    console.log(id)
+    const rental = await this.repository.findOneBy({ id })
+    console.log(rental)
+    return rental
   }
 }
 
