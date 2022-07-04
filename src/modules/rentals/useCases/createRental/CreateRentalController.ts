@@ -16,7 +16,7 @@ class CreateRentalController {
       car_id
     })
 
-    return response.send(201).json(rental)
+    return response.status(201).json(rental)
   }
 }
 
