@@ -1,7 +1,7 @@
 import { ICreateRentalDTO } from "@modules/rentals/dtos/ICreateRentalDTO";
 import { IRentalsRepository } from "@modules/rentals/repositories/IRentalsRepository";
 import dataSource from "@shared/infra/typeorm/data-source";
-import { Repository } from "typeorm";
+import { IsNull, Not, Repository } from "typeorm";
 import { Rental } from "../entities/Rental";
 
 class RentalsRepository implements IRentalsRepository {
@@ -20,11 +20,14 @@ class RentalsRepository implements IRentalsRepository {
     return this.repository.findOneBy({ user_id })
   }
 
-  async create({ car_id, expected_return_date, user_id }: ICreateRentalDTO): Promise<Rental> {
+  async create({ car_id, expected_return_date, user_id, id, end_date, total }: ICreateRentalDTO): Promise<Rental> {
     const rental = await this.repository.create({
       car_id,
       expected_return_date,
-      user_id
+      user_id,
+      id,
+      total,
+      end_date
     })
 
     await this.repository.save(rental);
@@ -33,9 +36,12 @@ class RentalsRepository implements IRentalsRepository {
   }
 
   async findById(id: string): Promise<Rental> {
-    console.log(id)
-    const rental = await this.repository.findOneBy({ id })
-    console.log(rental)
+    const [rental] = await this.repository.find({
+      where: {
+        id,
+        end_date: IsNull()
+      }
+    })
     return rental
   }
 }
