@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid'
 
 @Entity("rentals")
@@ -28,7 +28,7 @@ class Rental {
   @CreateDateColumn()
   created_at: Date;
 
-  @DeleteDateColumn()
+  @UpdateDateColumn()
   updated_at: Date;
 
   constructor() {
