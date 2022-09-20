@@ -25,14 +25,14 @@ class DevolutionRentalUseCase {
 
   async execute({ id }: IRequest): Promise<Rental> {
     const rental = await this.rentalsRepository.findById(id);
-    const car = await this.carsRepository.findById(rental.car_id);
 
-    console.log(car);
     const minimum_daily = 1;
 
     if (!rental) {
       throw new AppError("Rental is not exists!");
     }
+
+    const car = await this.carsRepository.findById(rental.car_id);
 
     // Verificar o tempo de aluguel 
     const dateNow = this.dateProvider.dateNow();
@@ -62,7 +62,6 @@ class DevolutionRentalUseCase {
 
     await this.rentalsRepository.create(rental);
     await this.carsRepository.updateAvailable(car.id, true);
-
     return rental;
   }
 }
