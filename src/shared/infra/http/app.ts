@@ -16,8 +16,11 @@ createConnection();
 import "@shared/container"
 import { AppError } from "@shared/errors/AppError";
 import upload from "@config/upload";
+import rateLimiter from "./middlewares/rateLimiter";
 
 const app = express();
+
+app.use(rateLimiter);
 
 app.use(express.json());
 
