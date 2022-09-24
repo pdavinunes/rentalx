@@ -1,63 +1,41 @@
-# Cadastro de carro
+## Configurando proxy-reverso 
 
-**RF** 
+```
+$ sudo apt install nginx
+$ cd /etc/nginx/sites-available 
+$ sudo touch rentalx
+$ vim rentalx 
+ 
+# Copie isso! 
+ server {
+ 	listen 80 default_server;
+ 	listen [::]:80 default_server;
+	location / {
+        proxy_pass http://localhost:3333;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+# Fim 
 
-Deve ser possível cadastrar um novo carro.
+$ sudo ln -s /etc/nginx/sites-available/rentalx rentalx
+$ sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+$ sudo service nginx restart
+``` 
 
-**RN**
+### Configurando PM2
 
-* Não deve ser possível cadastrar um carro com uma placa já existente.
-* O carro deve ser cadastrado por padrão com disponibilidade.
-* O usuario responsável pelo cadastro deve ser um usuário administrador. *
+```
+$ sudo npm install pm2 -g
+$ cd ~/app/
+$ pm2 start ~/app/api/dist/shared/infra/http/server.js --name rentalx
+```
 
-# Listagem de carros
+### Rodando migrations 
 
-**RF**
-
-Deve ser possível listar os carros disponíveis.
-Dever ser possível listar todos os carros disponíveis pelo nome da categoria
-Dever ser possível listar todos os carros disponíveis pelo nome da marca
-Dever ser possível listar todos os carros disponíveis pelo nome do carro
-
-**RN**
-* O usuário não precisar está logado no sistema.
-
-# Cadastro de Especificação no carro
-
-**RF**
-
-Deve ser possível cadastrar uma especficação para um carro
-
-**RN**
-
-* Não deve ser possível cadastrar uma especificação para um carro inexistente.
-* Não deve ser possível cadastrar uma especificação já existente para o mesmo carro.
-* O usuario responsável pelo cadastro deve ser um usuário administrador.
-
-# Cadastro de imagens do carro
-
-**RF**
-
-Deve ser possível cadastrar a imagem do caro
-Deve ser possível listar todos os carros
-
-**RNF**
-
-Utilizar o multer para upload dos arquivos
-
-**RN**
-
-* O usuário deve poder cadastrar mais de uma imagem para o mesmo carro.
-* O usuario responsável pelo cadastro deve ser um usuário administrador.
-
-# Aluguel
-
-**RF**
-
-Deve ser possível cadastrar um aluguel
-
-**RN**
-
-* O alugel deve ter duração minima de 24 horas.
-* Não deve ser possível cadastrar um novo alugel caso já exista um aberto para o mesmo usuário
-* Não deve ser possível cadastrar um novo alugel caso já exista um aberto para o mesmo carro
+```
+~/app/api/.node_modules/.bin/typeorm migration:run
+``` 
