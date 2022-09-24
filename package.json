@@ -12,6 +12,8 @@
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files"
   },
   "dependencies": {
+    "@sentry/node": "^7.13.0",
+    "@sentry/tracing": "^7.13.0",
     "aws-sdk": "^2.1221.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
