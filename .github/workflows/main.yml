@@ -34,3 +34,16 @@ jobs:
           key: ${{ secrets.SSH_KEY }} # ssh-keygen 
           source: "., !node_modules"
           target: "~/app/api"
+          
+      - name: multiple command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }} # ip da instância
+          username: ${{ secrets.SSH_USER }} # usuario configurado na instância
+          port: ${{ secrets.SSH_PORT }} # porta ssh
+          key: ${{ secrets.SSH_KEY }} # ssh-keygen 
+          script: |
+            cd ~/app/api
+            yarn
+            ./node_modules/,bin/typeorm migration:run
+            pm2 restart rentalx
